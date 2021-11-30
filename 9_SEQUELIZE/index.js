@@ -40,9 +40,17 @@ app.post('/users/create', async (req, res) => {
 
   console.log(req.body)
 
-  await User.create({ name, occupation, newsletter }) //Com isso é possível criar as querys no bando de dados automaticamente com o sequelize
+  await User.create({ name, occupation, newsletter }) //Com isso é possível criar as querys no bando de dados automaticamente com o sequelize o await garante que o redirecionamento so irá acontecer após o usuário ser criado
 
   res.redirect('/')
+})
+
+app.get('/users/:id', async (req, res) => { //Pegando ID dinamicamente do url utilizando sequelize
+  const id = req.params.id
+
+  const user = await User.findOne({ raw: true, where: { id: id } }) //Pegando 1 usuário da tabela
+
+  res.render('userview', { user })  //Renderizando html do handlebars com o nome userview
 })
 
 app.get('/', async (req, res) => {

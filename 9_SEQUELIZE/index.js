@@ -45,17 +45,27 @@ app.post('/users/create', async (req, res) => {
   res.redirect('/')
 })
 
-app.get('/users/:id', async (req, res) => { //Pegando ID dinamicamente do url utilizando sequelize
+app.get('/users/:id', async (req, res) => {
+  //Pegando ID dinamicamente do url utilizando sequelize
   const id = req.params.id
 
   const user = await User.findOne({ raw: true, where: { id: id } }) //Pegando 1 usuário da tabela
 
-  res.render('userview', { user })  //Renderizando html do handlebars com o nome userview
+  res.render('userview', { user }) //Renderizando html do handlebars com o nome userview
+})
+
+app.post('/users/delete/:id', async (req, res) => {
+  //Deletando usuários
+
+  const id = req.params.id
+
+  await User.destroy({ where: { id: id } })
+
+  res.redirect('/')
 })
 
 app.get('/', async (req, res) => {
-
-  const users = await User.findAll({raw: true})
+  const users = await User.findAll({ raw: true })
 
   console.log(users)
 

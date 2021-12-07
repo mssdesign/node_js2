@@ -65,13 +65,40 @@ app.post('/users/delete/:id', async (req, res) => {
 })
 
 app.get('/users/edit/:id', async (req, res) => {
-  //Editando usuários
+  //Pegando usuários para edição
 
   const id = req.params.id
 
   const user = await User.findOne({ raw: true, where: { id: id } }) //raw permite utilizar o dado
 
   res.render('useredit', { user })
+})
+
+app.post('/users/update', async (req, res) => {
+  //Editando usuários
+
+  const id = req.body.id
+  const name = req.body.name
+  const occupation = req.body.occupation
+  let newsletter = req.body.newsletter
+
+  if(newsletter === 'on') {
+    newsletter = true
+  } else {
+    newsletter = false
+  }
+
+  const userData = {
+    id,     //Abreviação de "id: id" -> mesmo nome já atribui o valor à variável (destructuring)
+    name, 
+    occupation,
+    newsletter
+  }
+
+  await User.update(userData, { where: {id: id} })  //Atenção ao trabalhar com SeQueLize "User" utilize o where para filtrar 
+
+  res.redirect('/')
+
 })
 
 app.get('/', async (req, res) => {
@@ -83,9 +110,10 @@ app.get('/', async (req, res) => {
 })
 
 conn
-  .sync()
+  .sync() //.sync({force: true})  //Recria as tabelas e apaga os dados a partir do momento que salva
   .then(() => {
     //A aplicação só vai funcionar quando as tabelas necessárias forem criadas
     app.listen(3000)
   })
   .catch((err) => console.log(err))
+  

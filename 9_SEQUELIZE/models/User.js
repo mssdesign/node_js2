@@ -5,6 +5,7 @@ const { DataTypes } = require('sequelize') //Dá acesso a todos os tipos de dado
 
 const db = require('../db/conn')
 
+//Definindo a estrutura da tabela
 const User = db.define('User', {
     name: {
         type: DataTypes.STRING,      //Se apertar Ctrl + space o autocomplete do DataTypes mostra todos os tipos de sql

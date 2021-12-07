@@ -1,5 +1,6 @@
 <h1>Editando: {{ user.name }}</h1>
 <form action="/users/update" method="POST" class="form">
+    {{!-- O atributo name deverá ser igual ao nome do índice respectivo na tabela do SQL --}}
     <input type="hidden" name="id" value="{{user.id}}">
     <div class="form-control">
         <label for="name">Nome:</label>
@@ -19,3 +20,23 @@
     </div>
     <input type="submit" value="Editar">
 </form>
+
+<div class="address-container">
+    <h2 style="text-align: center;">Endereços:</h2>
+    <form action="/address/create" method="post">
+        <input type="hidden" name="UserId" value="{{user.id}}">
+        <div class="form-control">
+            <label for="street">Rua:</label>
+            <input type="text" name="street" placeholder="Digite a rua">
+        </div>
+        <div class="form-control">
+            <label for="number">Número:</label>
+            <input type="text" name="number" placeholder="Digite o número da residência">
+        </div>
+        <div class="form-control">
+            <label for="city">Cidade:</label>
+            <input type="text" name="city" placeholder="Digite a cidade">
+        </div>
+        <input type="submit" value="Incluir endereço:">
+    </form>
+</div>

@@ -1,7 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const conn = require('./db/conn')
-
+const Address = require('./models/Address')
 const User = require('./models/User') //Não é preciso utilizar para criar a tabela tendo o caminho do arquivo aqui o sequelize entende e mapeia ele criando a tabela ao iniciar a aplicação
 
 const app = express()

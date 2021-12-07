@@ -109,6 +109,26 @@ app.get('/', async (req, res) => {
   res.render('home', { users: users })
 })
 
+app.post('/address/create', async (req, res) => {
+
+  const UserId = req.body.UserId
+  const street = req.body.street
+  const number = req.body.number
+  const city = req.body.city
+
+  const address = {
+    UserId, //Forma reduzida de "UserId: UserId" (constante acima)
+    street,
+    number,
+    city
+  }
+
+  await Address.create(address) //Criando e esperando a tabela ser criada
+
+  res.redirect(`/users/edit/${UserId}`)
+
+})
+
 conn
   .sync() //.sync({force: true})  //Recria as tabelas e apaga os dados a partir do momento que salva
   .then(() => {

@@ -64,6 +64,16 @@ app.post('/users/delete/:id', async (req, res) => {
   res.redirect('/')
 })
 
+app.get('/users/edit/:id', async (req, res) => {
+  //Editando usuários
+
+  const id = req.params.id
+
+  const user = await User.findOne({ raw: true, where: { id: id } }) //raw permite utilizar o dado
+
+  res.render('useredit', { user })
+})
+
 app.get('/', async (req, res) => {
   const users = await User.findAll({ raw: true })
 

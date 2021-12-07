@@ -134,6 +134,18 @@ app.post('/address/create', async (req, res) => {
   res.redirect(`/users/edit/${UserId}`)
 })
 
+app.post('/address/delete', async (req, res) => {
+  const UserId = req.body.UserId
+  const id = req.body.id
+
+  await Address.destroy({
+    where: { id: id }  //Sempre lembre-se do WHERE
+  })
+
+  res.redirect(`/users/edit/${UserId}`)
+
+})
+
 conn
   .sync() //.sync({force: true})  //Recria as tabelas e apaga os dados a partir do momento que salva
   .then(() => {

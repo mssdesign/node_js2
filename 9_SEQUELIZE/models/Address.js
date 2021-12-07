@@ -22,5 +22,6 @@ const Address = db.define('Address', {
 
 //Criando relacionamento entre as tabelas User e Address
 Address.belongsTo(User)
+User.hasMany(Address)   //Um único usuário poderá ter vários endereços
 
 module.exports = Address

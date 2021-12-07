@@ -69,9 +69,17 @@ app.get('/users/edit/:id', async (req, res) => {
 
   const id = req.params.id
 
-  const user = await User.findOne({ raw: true, where: { id: id } }) //raw permite utilizar o dado
+  try {
+    const user = await User.findOne({ include: Address, where: { id: id } })
 
-  res.render('useredit', { user })
+    res.render('useredit', { user: user.get({ plain: true }) })
+  } catch (error) {
+    console.log(error)
+  }
+
+  // const user = await User.findOne({ raw: true, where: { id: id } }) //raw permite utilizar o dado
+
+  // res.render('useredit', { user: user.get({ plain: true }) })
 })
 
 app.post('/users/update', async (req, res) => {
@@ -82,23 +90,22 @@ app.post('/users/update', async (req, res) => {
   const occupation = req.body.occupation
   let newsletter = req.body.newsletter
 
-  if(newsletter === 'on') {
+  if (newsletter === 'on') {
     newsletter = true
   } else {
     newsletter = false
   }
 
   const userData = {
-    id,     //Abreviação de "id: id" -> mesmo nome já atribui o valor à variável (destructuring)
-    name, 
+    id, //Abreviação de "id: id" -> mesmo nome já atribui o valor à variável (destructuring)
+    name,
     occupation,
-    newsletter
+    newsletter,
   }
 
-  await User.update(userData, { where: {id: id} })  //Atenção ao trabalhar com SeQueLize "User" utilize o where para filtrar 
+  await User.update(userData, { where: { id: id } }) //Atenção ao trabalhar com SeQueLize "User" utilize o where para filtrar
 
   res.redirect('/')
-
 })
 
 app.get('/', async (req, res) => {
@@ -110,7 +117,6 @@ app.get('/', async (req, res) => {
 })
 
 app.post('/address/create', async (req, res) => {
-
   const UserId = req.body.UserId
   const street = req.body.street
   const number = req.body.number
@@ -120,13 +126,12 @@ app.post('/address/create', async (req, res) => {
     UserId, //Forma reduzida de "UserId: UserId" (constante acima)
     street,
     number,
-    city
+    city,
   }
 
   await Address.create(address) //Criando e esperando a tabela ser criada
 
   res.redirect(`/users/edit/${UserId}`)
-
 })
 
 conn
@@ -136,4 +141,3 @@ conn
     app.listen(3000)
   })
   .catch((err) => console.log(err))
-  

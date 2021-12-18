@@ -7,6 +7,8 @@ const conn = require('./db/conn') //Chamando a conexão com o banco de dados em 
 
 const Task = require('./models/Task')
 
+const tasksRoutes = require('./routes/tasksRoutes')
+
 app.engine('handlebars', exphbs()) //Invocar o express-handlebars
 app.set('view engine', 'handlebars') //Definindo a engine
 
@@ -20,6 +22,8 @@ app.use(
 app.use(express.json())
 
 app.use(express.static('public'))
+
+app.use('/tasks', tasksRoutes)
 
 conn
   .sync()

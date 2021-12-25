@@ -23,6 +23,10 @@ app.post('/createproduct', (req, res) => {
     const name = req.body.name
     const price = req.body.price
 
+    if (!name) {
+        res.status(422).json({message: 'Faltando name'}) //Definindo resposta de erro
+    }
+
     console.log(name, price)    //Ou salvar no banco
     res.json({message: 'O produto foi criado!'}) //resposta da requisição
 })
